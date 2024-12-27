@@ -2,38 +2,52 @@
   <div class="home pt-5 px-5">
     <div class="bar-test-container px-5 py-3 mt-5" s>
       <h2 class="graph-title">Tipo de denuncia</h2>
-      <BarTest />
+      <Bar />
     </div>
   
     <div class="bar-test-container px-5 py-3 mt-5" s>
       <h2 class="graph-title">Total de denuncias por persona asignada</h2>
       <Pie 
-        :chartData="myData"
+        :chartData="myPieData"
       />
     </div>
   
+    <div class="bar-test-container px-5 py-3 mt-5" s>
+      <h2 class="graph-title">Estado de las denuncias</h2>
+      <BarHorizontal 
+        :chartData="[
+          { value: 100, label: 'Todas' },
+          { value: 85, label: 'Nuevas' },
+          { value: 75, label: 'En curso' },
+          { value: 65, label: 'Descartadas' },
+          { value: 55, label: 'Finalizadas' }
+        ]"
+        :width="400"
+        :height="300"
+      />
+    </div>
+  
+
   </div>
 </template>
 
 <script>
-import BarChart from '../components/Bar.vue';
-import BarTest from '../components/BarTest.vue';
+import Bar from '../components/Bar.vue';
 import Pie from '../components/Pie.vue'
+import BarHorizontal from '../components/BarHorizontal.vue'
 
 export default {
   components: {
-    BarChart,
-    BarTest,
-    Pie
+    Bar,
+    Pie,
+    BarHorizontal
   },
   data() {
     return {
-      myData: [
-        { value: 20, label: 'GESTOR 01', color: '#00AAE8' },
+      myPieData: [
+        { value: 45, label: 'GESTOR 01', color: '#00AAE8' },
         { value: 30, label: 'GESTOR 02', color: '#040045' },
-        { value: 20, label: 'ADMINIST 01', color: '#242432' },
-        { value: 10, label: 'OTROS', color: '#7CD4F4' },
-        { value: 20, label: 'NO ASIGNADAS', color: '#52B4D2' }
+        { value: 25, label: 'NO ASIGNADAS', color: '#52B4D2' }  
       ]
     }
   }

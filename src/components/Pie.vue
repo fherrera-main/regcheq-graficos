@@ -216,11 +216,14 @@ export default {
 .pie-label.active {
   font-weight: 500;
 }
-
+.pie-section-active {
+  cursor: pointer;
+}
 .percentage-text {
   font-size: 20px;
   fill: white;
   pointer-events: none;
   font-weight: 400;
 }
+
 </style> 
