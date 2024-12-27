@@ -1,5 +1,5 @@
 <template>
-  <div class="home pt-5 px-5">
+  <div class="home pt-5 px-5 b-row">
     <div class="bar-test-container px-5 py-3 mt-5" s>
       <h2 class="graph-title">Tipo de denuncia</h2>
       <Bar />
@@ -12,7 +12,7 @@
       />
     </div>
   
-    <div class="bar-test-container px-5 py-3 mt-5" s>
+    <div class="bar-test-container px-5 py-3 mt-5" style="width: 546px;">
       <h2 class="graph-title">Estado de las denuncias</h2>
       <BarHorizontal 
         :chartData="[
@@ -26,7 +26,12 @@
         :height="300"
       />
     </div>
+    
+    <div class="bar-test-container px-5 py-3 mt-5" style="width: 546px;">
+      <h2 class="graph-title">Total denunciante</h2>
+    </div>
   
+
 
   </div>
 </template>

@@ -21,6 +21,7 @@
         <path
           :d="getBarPath(index, item)"
           :fill="getBarColor(index)"
+          class="bar-path"
         />
 
         <!-- Labels sobre las barras -->
@@ -33,15 +34,33 @@
           class="bar-label"
           fill="white"
         >
-          {{ labels[index] }}
+          {{ labels[index] }} 
+          <tspan 
+            class="percentage-label" 
+            :opacity="0"
+            dx="5"
+          >
+            {{ formatPercentage(data[index]) }}%
+          </tspan>
         </text>
       </g>
+
+      <!-- Línea del eje X -->
+      <line
+        :x1="padding"
+        :x2="width - (padding - 45)"
+        :y1="height - 26"
+        :y2="height - 26"
+        stroke="#464555"
+        stroke-width="0.4"
+        shape-rendering="crispEdges"
+      />
 
       <!-- Labels eje X (porcentajes) -->
       <g v-for="tick in xTicks" :key="'x-tick-'+tick">
         <text
           :x="getXAxisPosition(tick)"
-          :y="height - 20"
+          :y="height - 36"
           text-anchor="end"
           font-size="12"
           class="x-axis-label"
@@ -49,6 +68,17 @@
           {{ formatXAxis(tick) }}
         </text>
       </g>
+
+      <!-- Etiqueta "Porcentaje" -->
+      <text
+        :x="width / 2"
+        :y="height - 10"
+        text-anchor="middle"
+        font-size="10"
+        class="x-axis-label"
+      >
+        Porcentaje
+      </text>
     </svg>
   </div>
 </template>
@@ -175,13 +205,15 @@ export default {
       const radius = 8;
 
       if (index === 0) {
-        // Primera barra: solo esquina superior derecha redondeada
+        // Primera barra: esquinas superior izquierda y derecha redondeadas
         return `
-          M ${x},${y}
+          M ${x + radius},${y}
           L ${x + width - radius},${y}
           Q ${x + width},${y} ${x + width},${y + radius}
           L ${x + width},${y + height}
           L ${x},${y + height}
+          L ${x},${y + radius}
+          Q ${x},${y} ${x + radius},${y}
           Z
         `;
       } else {
@@ -198,7 +230,13 @@ export default {
     },
     getBarLabelX(normalizedValue) {
       // Posicionamos el texto a 10px del inicio de la barra
-      return this.padding + 12
+      return this.padding + 16
+    },
+    formatPercentage(value) {
+      return new Intl.NumberFormat('es-ES', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }).format(value)
     }
   }
 }
@@ -221,7 +259,29 @@ export default {
 
 .bar-label {
   font-family: 'Montserrat', sans-serif;
-  font-weight: 400;
+  font-weight: 300;
+  cursor: pointer;
+  pointer-events: none;
+  user-select: none;
+}
+
+.bar-path {
+  transition: transform 0.3s ease;
+  transform-origin: center;
+}
+
+.bar-path:hover {
+  transform: scaleX(1.03); /* Aumenta el ancho en un 5% */
+}
+
+.bar-path:hover + text .percentage-label {
+  opacity: 1 !important;
+  transition: opacity 0.3s ease;
+}
+
+.percentage-label {
+  margin-left: 10px;
+  transition: opacity 0.3s ease;
 }
 </style>
 
