@@ -93,7 +93,7 @@ export default {
     },
     width: {
       type: Number,
-      default: 500
+      default: 455
     },
     height: {
       type: Number,

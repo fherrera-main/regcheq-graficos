@@ -5,19 +5,37 @@
       <BarTest />
     </div>
   
+    <div class="bar-test-container px-5 py-3 mt-5" s>
+      <h2 class="graph-title">Total de denuncias por persona asignada</h2>
+      <Pie 
+        :chartData="myData"
+      />
+    </div>
+  
   </div>
 </template>
 
 <script>
 import BarChart from '../components/Bar.vue';
-import BarTest from '../components/BarTest.vue';  
-import Test from '../components/test.vue';
+import BarTest from '../components/BarTest.vue';
+import Pie from '../components/Pie.vue'
 
 export default {
   components: {
     BarChart,
     BarTest,
-    Test
+    Pie
+  },
+  data() {
+    return {
+      myData: [
+        { value: 20, label: 'GESTOR 01', color: '#00AAE8' },
+        { value: 30, label: 'GESTOR 02', color: '#040045' },
+        { value: 20, label: 'ADMINIST 01', color: '#242432' },
+        { value: 10, label: 'OTROS', color: '#7CD4F4' },
+        { value: 20, label: 'NO ASIGNADAS', color: '#52B4D2' }
+      ]
+    }
   }
 };
 </script>
@@ -34,16 +52,10 @@ export default {
   text-decoration-skip-ink: none;
 
 }
-.bar-chart-container{
-  max-width: 550px;
-  max-height: 350px;
-  border-radius: 20px;
-  box-shadow: 0px 3.15px 8.68px 0px rgba(127, 127, 127, 0.25);
-}
 
 .bar-test-container {
-  width: 550px;
-  height: 350px;
+  width: fit-content;
+  height: fit-content;
   border-radius: 20px;
   position: relative;
   box-shadow: 0px 3.15px 8.68px 0px #7F7F7F40;
