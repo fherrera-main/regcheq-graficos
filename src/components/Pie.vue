@@ -1,7 +1,12 @@
 <template>
   <div class="pie-chart-container">
-    <svg :width="width" :height="height" >
-      <g :transform="`translate(${width/2},${height/2})`">
+    <svg 
+      :width="width" 
+      :height="250"
+      :viewBox="`-${width/2} -${height/3} ${width} ${height/1.5}`"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <g>
         <!-- Secciones inactivas -->
         <path
           v-for="(section, index) in computedPieData"
@@ -204,7 +209,6 @@ export default {
 
 .pie-section {
   transition: all 0.3s ease;
-  cursor: pointer;
 }
 
 .pie-label {
@@ -215,9 +219,6 @@ export default {
 
 .pie-label.active {
   font-weight: 500;
-}
-.pie-section-active {
-  cursor: pointer;
 }
 .percentage-text {
   font-size: 20px;
