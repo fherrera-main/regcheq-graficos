@@ -21,7 +21,7 @@
         class="background-rect"
         x="40"
         :y="height - paddingBottom - 7"
-        :width="width - padding - 40"
+        :width="width - padding - 35"
         height="50"
         fill="#F7F7FC"
         opacity="1" 
