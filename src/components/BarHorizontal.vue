@@ -283,5 +283,21 @@ export default {
   margin-left: 10px;
   transition: opacity 0.3s ease;
 }
+/* Agregar estos estilos globales */
+.tooltip.b-tooltip {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 14.63px;
+  letter-spacing: 0.0025em;
+}
+
+.tooltip.b-tooltip .tooltip-inner {
+  background-color: #464555;
+}
+
+.tooltip.b-tooltip.bs-tooltip-top .arrow::before {
+  border-top-color: #464555;
+}
 </style>
 

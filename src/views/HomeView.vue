@@ -53,7 +53,7 @@ import Bar from '../components/Bar.vue';
 import Pie from '../components/Pie.vue'
 import BarHorizontal from '../components/BarHorizontal.vue'
 import BarVariante from '../components/BarVariante.vue'
-import BarVariant2 from '../components/BarVariant2.vue' 
+import BarVariant2 from '../components/BarVariante2.vue' 
 export default {
   components: {
     Bar,
