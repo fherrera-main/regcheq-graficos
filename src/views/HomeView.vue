@@ -44,6 +44,19 @@
           <BarVariant2 :chartData="myBarVariant2Data" />
         </div>
       </b-col>
+      <b-col cols="12" md="6" class="p-3">
+        <div class=" px-5 py-3">
+          <h2 class="graph-title">Relación con el cliente</h2>
+          <Doughnut  :chartData="[
+            { value: 30, label: 'Cliente' },
+            { value: 25, label: 'Proveedor' },
+            { value: 25, label: 'Colaborador' },
+            { value: 20, label: 'Otro' }
+          ]"
+          :width="400"
+          :height="250" />
+        </div>
+      </b-col>
     </b-row>
   </div>
 </template>
@@ -54,13 +67,15 @@ import Pie from '../components/Pie.vue'
 import BarHorizontal from '../components/BarHorizontal.vue'
 import BarVariante from '../components/BarVariante.vue'
 import BarVariant2 from '../components/BarVariante2.vue' 
+import Doughnut from '../components/Doughnut.vue'
 export default {
   components: {
     Bar,
     Pie,
     BarHorizontal,
     BarVariante,
-    BarVariant2
+    BarVariant2,
+    Doughnut
   },
   data() {
     return {
