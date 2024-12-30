@@ -1,5 +1,5 @@
 <template>
-  <div class="doughnut-chart-container">
+  <div class="doughnut-chart-container" style="overflow: visible;">
     <svg 
       :width="width" 
       :height="height"
@@ -7,6 +7,16 @@
       preserveAspectRatio="xMidYMid meet"
     >
       <g>
+        <!-- Círculo de fondo -->
+        <circle
+          :cx="0"
+          :cy="0"
+          :r="radius - strokeWidth/2"
+          :stroke="'#F7F7FC'"
+          :stroke-width="strokeWidth"
+          fill="none"
+        />
+
         <!-- Todas las secciones en un solo grupo -->
         <path
           v-for="(section, index) in sortedSections"
@@ -17,6 +27,9 @@
           @mouseenter="activeIndex = section.originalIndex"
           @mouseleave="activeIndex = null"
           :class="{ 'is-active': activeIndex === section.originalIndex }"
+          stroke-linecap="round"
+          :stroke="section.color || colors[section.originalIndex % colors.length]"
+          :stroke-width="strokeWidth"
         />
 
         <!-- Etiquetas -->
@@ -31,16 +44,16 @@
           {{ chartData[index].label }}
         </text>
 
-        <!-- Añadir el texto del porcentaje en el centro -->
+        <!-- Modificar el texto del porcentaje en el centro -->
         <text
-          v-if="activeIndex !== null"
           x="0"
           y="0"
           text-anchor="middle"
           alignment-baseline="middle"
           class="percentage-label"
+          :class="{ 'default-percentage': activeIndex === null }"
         >
-          {{ getPercentage(chartData[activeIndex].value) }}%
+          {{ activeIndex !== null ? getPercentage(chartData[activeIndex].value) : '100' }}%
         </text>
       </g>
     </svg>
@@ -54,10 +67,10 @@ export default {
     chartData: {
       type: Array,
       default: () => [
-        { value: 30, label: 'Cliente' },
+        { value: 1, label: 'Cliente' },
         { value: 25, label: 'Proveedor' },
         { value: 25, label: 'Colaborador' },
-        { value: 20, label: 'Otro' }
+        { value: 50, label: 'Otro' }
       ]
     },
     width: {
@@ -89,14 +102,14 @@ export default {
       return this.chartData.reduce((sum, item) => sum + item.value, 0)
     },
     computedDoughnutData() {
-      let currentAngle = 0
+      let currentAngle = Math.PI / 2;
       return this.chartData.map(item => {
-        const percentage = item.value / this.total
-        const startAngle = currentAngle
-        const endAngle = currentAngle + (percentage * Math.PI * 2)
-        const midAngle = startAngle + (endAngle - startAngle) / 2
+        const percentage = item.value / this.total;
+        const startAngle = currentAngle;
+        const endAngle = currentAngle + (percentage * Math.PI);
+        const midAngle = startAngle + (endAngle - startAngle) / 2;
         
-        currentAngle = endAngle
+        currentAngle = endAngle;
         
         return {
           ...item,
@@ -115,6 +128,9 @@ export default {
         if (this.activeIndex === b.originalIndex) return -1;
         return 0;
       });
+    },
+    strokeWidth() {
+      return this.radius - this.innerRadius
     }
   },
   methods: {
@@ -125,27 +141,23 @@ export default {
       }
     },
     getArcPath(section) {
-      const startOuter = this.polarToCartesian(section.startAngle, this.radius)
-      const endOuter = this.polarToCartesian(section.endAngle, this.radius)
-      const startInner = this.polarToCartesian(section.startAngle, this.innerRadius)
-      const endInner = this.polarToCartesian(section.endAngle, this.innerRadius)
+      const adjustedRadius = this.radius - this.strokeWidth / 2
+      const startOuter = this.polarToCartesian(section.startAngle, adjustedRadius)
+      const endOuter = this.polarToCartesian(section.endAngle, adjustedRadius)
       
       const largeArcFlag = section.endAngle - section.startAngle <= Math.PI ? 0 : 1
       
       return `
         M ${startOuter.x} ${startOuter.y}
-        A ${this.radius} ${this.radius} 0 ${largeArcFlag} 1 ${endOuter.x} ${endOuter.y}
-        L ${endInner.x} ${endInner.y}
-        A ${this.innerRadius} ${this.innerRadius} 0 ${largeArcFlag} 0 ${startInner.x} ${startInner.y}
-        Z
+        A ${adjustedRadius} ${adjustedRadius} 0 ${largeArcFlag} 1 ${endOuter.x} ${endOuter.y}
       `
     },
     getLabelPosition(section) {
-      const labelRadius = this.radius + 20
-      const pos = this.polarToCartesian(section.midAngle, labelRadius)
+      const labelRadius = this.radius + 20;
+      const pos = this.polarToCartesian(section.midAngle, labelRadius);
       return {
         x: pos.x,
-        y: pos.y
+        y: pos.y + (pos.y > 0 ? 10 : 0)
       }
     },
     getPercentage(value) {
@@ -161,18 +173,20 @@ export default {
 }
 .doughnut-chart-container {
   font-family: 'Montserrat', sans-serif;
+  position: relative;
+  overflow: visible !important;
 }
 
 .doughnut-section {
   transition: all 0.3s ease;
   transform-origin: center;
   transform-box: fill-box;
+  fill: none;
 }
 
 .doughnut-section:hover,
 .doughnut-section.is-active {
-  transform: scale(1.05);
-  z-index: 1;
+  transform: scale(1.05) translateZ(1px);
   filter: drop-shadow(0 0 3px rgba(0,0,0,0.2));
 }
 
@@ -194,6 +208,10 @@ export default {
   animation: fadeIn 0.3s ease forwards;
 }
 
+.percentage-label.default-percentage {
+  fill: #F7F7FC;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -201,6 +219,10 @@ export default {
   to {
     opacity: 1;
   }
+}
+
+svg {
+  overflow: visible;
 }
 </style>
 

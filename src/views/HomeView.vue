@@ -48,10 +48,10 @@
         <div class=" px-5 py-3">
           <h2 class="graph-title">Relación con el cliente</h2>
           <Doughnut  :chartData="[
-            { value: 30, label: 'Cliente' },
-            { value: 25, label: 'Proveedor' },
+            { value: 18, label: 'Otro' },
             { value: 25, label: 'Colaborador' },
-            { value: 20, label: 'Otro' }
+            { value: 30, label: 'Proveedor' },
+            { value: 27, label: 'Cliente' }
           ]"
           :width="400"
           :height="250" />
