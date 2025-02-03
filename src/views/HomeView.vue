@@ -3,18 +3,6 @@
     <b-row no-gutters>
       <b-col cols="12" md="6" class="p-3">
         <div class=" px-5 py-3">
-          <h2 class="graph-title">Tipo de denuncia</h2>
-          <Bar />
-        </div>
-      </b-col>
-      <b-col cols="12" md="6" class="p-3">
-        <div class=" px-5 py-3">
-          <h2 class="graph-title">Total de denuncias por persona asignada</h2>
-          <Pie :chartData="myPieData" />
-        </div>
-      </b-col>
-      <b-col cols="12" md="6" class="p-3">
-        <div class=" px-5 py-3">
           <h2 class="graph-title">Estado de las denuncias</h2>
           <BarHorizontal 
             :chartData="[
@@ -31,6 +19,20 @@
       </b-col>
       <b-col cols="12" md="6" class="p-3">
         <div class=" px-5 py-3">
+          <h2 class="graph-title">Tipo de denuncia</h2>
+          <Bar />
+        </div>
+      </b-col>
+      <b-col cols="12" md="6" class="p-3">
+        <div class=" px-5 py-3">
+          <h2 class="graph-title">Relación con el cliente</h2>
+          <Doughnut
+          :width="400"
+          :height="250" />
+        </div>
+      </b-col>
+      <b-col cols="12" md="6" class="p-3">
+        <div class=" px-5 py-3">
           <h2 class="graph-title">Total denunciante</h2>
           <BarVariante :chartData="[
             { value: 45, label: 'Anónimos' },
@@ -40,23 +42,17 @@
       </b-col>
       <b-col cols="12" md="6" class="p-3">
         <div class=" px-5 py-3">
-          <h2 class="graph-title">Plazos</h2>
-          <BarVariant2 :chartData="myBarVariant2Data" />
+          <h2 class="graph-title">Total de denuncias por persona asignada</h2>
+          <Pie :chartData="myPieData" />
         </div>
       </b-col>
       <b-col cols="12" md="6" class="p-3">
         <div class=" px-5 py-3">
-          <h2 class="graph-title">Relación con el cliente</h2>
-          <Doughnut  :chartData="[
-            { value: 18, label: 'Otro' },
-            { value: 25, label: 'Colaborador' },
-            { value: 30, label: 'Proveedor' },
-            { value: 27, label: 'Cliente' }
-          ]"
-          :width="400"
-          :height="250" />
+          <h2 class="graph-title">Plazos</h2>
+          <BarVariant2 :chartData="myBarVariant2Data" />
         </div>
       </b-col>
+     
     </b-row>
   </div>
 </template>
@@ -87,8 +83,8 @@ export default {
         { value: 20, label: 'NO ASIGNADAS', color: '#52B4D2' }
       ],
       myBarVariant2Data: [
-        { rango: 'Menos de 1 día', nuevas: 48, enCurso: 35 },
-        { rango: 'Entre 1 y 3 días', nuevas: 57, enCurso: 45 },
+        { rango: 'Menos de 1 día', nuevas: 5, enCurso: 5 },
+        { rango: 'Entre 1 y 3 días', nuevas: 0, enCurso: 15 },
         { rango: 'Entre 3 y 7 días', nuevas: 48, enCurso: 35 },
         { rango: 'Más de una semana', nuevas: 30, enCurso: 19 }
       ]

@@ -22,13 +22,13 @@
           v-for="(section, index) in sortedSections"
           :key="section.originalIndex"
           :d="getArcPath(section)"
-          :fill="section.color || colors[section.originalIndex % colors.length]"
+          :fill="section.color"
           class="doughnut-section"
           @mouseenter="activeIndex = section.originalIndex"
           @mouseleave="activeIndex = null"
           :class="{ 'is-active': activeIndex === section.originalIndex }"
           stroke-linecap="round"
-          :stroke="section.color || colors[section.originalIndex % colors.length]"
+          :stroke="section.color"
           :stroke-width="strokeWidth"
         />
 
@@ -67,10 +67,10 @@ export default {
     chartData: {
       type: Array,
       default: () => [
-        { value: 1, label: 'Cliente' },
-        { value: 25, label: 'Proveedor' },
-        { value: 25, label: 'Colaborador' },
-        { value: 50, label: 'Otro' }
+        { value: 18, label: 'Cliente', color: '#040045' },
+        { value: 25, label: 'Proveedor', color: '#52B4D2' },
+        { value: 30, label: 'Colaborador', color: '#00AAE8' },
+        { value: 27, label: 'Otro', color: '#7CD4F4' }
       ]
     },
     width: {
@@ -80,10 +80,6 @@ export default {
     height: {
       type: Number,
       default: 400
-    },
-    colors: {
-      type: Array,
-      default: () => ['#040045', '#52B4D2', '#00AAE8', '#7CD4F4']
     }
   },
   data() {
@@ -96,7 +92,7 @@ export default {
       return Math.min(this.width, this.height) / 2 * 0.8
     },
     innerRadius() {
-      return this.radius * 0.65
+      return this.radius * 0.68
     },
     total() {
       return this.chartData.reduce((sum, item) => sum + item.value, 0)

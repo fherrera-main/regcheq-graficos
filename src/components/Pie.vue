@@ -7,16 +7,14 @@
       preserveAspectRatio="xMidYMid meet"
     >
       <g>
-        <!-- Secciones inactivas -->
+        <!-- Secciones del pie (combinar activas e inactivas) -->
         <path
           v-for="(section, index) in computedPieData"
-          v-if="activeIndex !== index"
           :key="index"
           :d="getArcPath(section)"
           :fill="section.color || colors[index % colors.length]"
           class="pie-section"
-          @mouseover="activeIndex = index"
-          @mouseleave="activeIndex = null"
+          :data-index="index"
         />
         
         <!-- Líneas y etiquetas -->
@@ -48,27 +46,22 @@
           </text>
         </g>
 
-        <!-- Sección activa -->
-        <path
-          v-if="activeIndex !== null"
-          :d="getArcPath(computedPieData[activeIndex])"
-          :fill="computedPieData[activeIndex].color || colors[activeIndex % colors.length]"
-          class="pie-section pie-section-active"
-          :style="getTransformStyle(computedPieData[activeIndex])"
-          @mouseover="activeIndex = activeIndex"
-          @mouseleave="activeIndex = null"
-        />
-        
-        <!-- Porcentaje (renderizado al final) -->
-        <text
-          v-if="activeIndex !== null"
-          :transform="getPercentagePosition(computedPieData[activeIndex])"
-          class="percentage-text"
-          text-anchor="middle"
-          dy=".35em"
-        >
-          {{ getPercentage(computedPieData[activeIndex].value) }}%
-        </text>
+        <!-- Porcentaje -->
+        <g v-for="(section, index) in computedPieData" :key="index" class="section-group">
+          <path
+            :d="getArcPath(section)"
+            :fill="section.color || colors[index % colors.length]"
+            class="pie-section"
+          />
+          <text
+            :transform="getPercentagePosition(section)"
+            class="percentage-text"
+            text-anchor="middle"
+            dy=".35em"
+          >
+            {{ getPercentage(section.value) }}%
+          </text>
+        </g>
       </g>
     </svg>
   </div>
@@ -208,7 +201,37 @@ export default {
 }
 
 .pie-section {
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.pie-section:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.percentage-text {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  fill: white;
+  font-size: 20px;
+  pointer-events: none;
+  font-weight: 400;
+}
+
+/* Mostrar solo el porcentaje de la sección con hover */
+.section-group:hover .percentage-text {
+  opacity: 1;
+}
+
+.pie-label {
+  transition: font-weight 0.3s ease;
+}
+
+/* Usar selectores de hermanos adyacentes para activar las etiquetas */
+.pie-section:hover ~ .pie-label {
+  font-weight: 500;
 }
 
 .pie-label {
@@ -220,11 +243,4 @@ export default {
 .pie-label.active {
   font-weight: 500;
 }
-.percentage-text {
-  font-size: 20px;
-  fill: white;
-  pointer-events: none;
-  font-weight: 400;
-}
-
 </style> 
